@@ -41,10 +41,14 @@ public class GasApp extends JPanel {
 
             JButton calculateButton = new JButton("Рассчитать");
             calculateButton.setBackground(Color.green);
+            calculateButton.setOpaque(true);
+            calculateButton.setBorderPainted(false);
             calculateButton.setFont(new Font("Arial", Font.BOLD, 16));
 
             JButton showHistoryButton = new JButton("Показать историю");
-            showHistoryButton.setBackground(Color.yellow);
+            showHistoryButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
+            showHistoryButton.setOpaque(true);
+            showHistoryButton.setBorderPainted(false);
             showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 
             // Добавляем компоненты в панель

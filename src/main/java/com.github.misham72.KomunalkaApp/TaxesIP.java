@@ -16,12 +16,13 @@ public class TaxesIP extends JPanel {
 
 	public TaxesIP() {
 		this.fileManager = new FileManager();
-		LocalDate date = LocalDate.now();
+
 		long daysUntilPayment = DateCalculator.calculateDaysToNextPayment(3, 30);
 		long daysFromPayment = DateCalculator.calculateDaysFromPreviousPayment(3, 30);
 		LocalDate nextPayment = DateCalculator.getNextPaymentDate(3, 30);
 		LocalDate previousPayment = DateCalculator.getPreviousPaymentDate(3, 30);
 		long priceTariff = 13414;
+        String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy / HH:mm:ss"));
 
 		setLayout(new GridLayout(7, 2, 10, 10));
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Добавляем отступы
@@ -32,7 +33,7 @@ public class TaxesIP extends JPanel {
 		add(previousPaymentLabel);
 
 
-		JLabel dateLabel = new JLabel(" Сегодня:          " + date);
+		JLabel dateLabel = new JLabel(" Сегодня:          " + formattedDateTime);
 		dateLabel.setFont(new Font("Arial", Font.BOLD, 18));
 		dateLabel.setForeground(Color.black);
 		add(dateLabel);
@@ -66,12 +67,13 @@ public class TaxesIP extends JPanel {
 		// Кнопка для сохранения данных
 		JButton saveHistoryButton = new JButton("Сохранить в файл");
 		saveHistoryButton.setBackground(Color.green);
+        saveHistoryButton.setOpaque(true);
+        saveHistoryButton.setBorderPainted(false);
+        saveHistoryButton.setFocusPainted(false);
 		saveHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(saveHistoryButton);
 		saveHistoryButton.addActionListener(_ -> {
 			try {
-				String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-
 				// Сохранение данных в файл
 				fileManager.formatPaymentDate(fileName, daysUntilPayment, daysFromPayment, nextPayment, previousPayment, priceTariff, formattedDateTime);
 				JOptionPane.showMessageDialog(this, "Данные успешно сохранены!", "Успех", JOptionPane.INFORMATION_MESSAGE);
@@ -82,7 +84,9 @@ public class TaxesIP extends JPanel {
 
 		// Кнопка для загрузки истории
 		JButton showHistoryButton = new JButton("Показать историю");
-		showHistoryButton.setBackground(Color.getHSBColor(0.99f, 0.29f, 0.94f));
+		showHistoryButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
+        showHistoryButton.setOpaque(true);
+        showHistoryButton.setBorderPainted(false);
 		showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(showHistoryButton);
 		showHistoryButton.addActionListener(_ -> {

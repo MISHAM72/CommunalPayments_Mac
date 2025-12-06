@@ -15,12 +15,13 @@ public class MTSsimApp extends JPanel {
 
     public MTSsimApp() {
         this.fileManager = new FileManager();
-        LocalDate date = LocalDate.now();
+
         long daysUntilPayment = DateCalculator.calculateDaysToNextPayment(1, 23);
         long daysFromPayment = DateCalculator.calculateDaysFromPreviousPayment(1, 23);
         LocalDate nextPayment = DateCalculator.getNextPaymentDate(1, 23);
         LocalDate previousPayment = DateCalculator.getPreviousPaymentDate(1, 23);
         long priceTariff = 905;
+        String FormattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy / HH:mm:ss"));
 
 
         setLayout(new GridLayout(7, 2, 10, 10));
@@ -31,7 +32,7 @@ public class MTSsimApp extends JPanel {
         previousPaymentLabel.setForeground(Color.blue);
         add(previousPaymentLabel);
 
-        JLabel dateLabel = new JLabel(" Сегодня:          " + date);
+        JLabel dateLabel = new JLabel(" Сегодня:          " + FormattedDateTime);
         dateLabel.setFont(new Font("Arial", Font.BOLD, 18));
         dateLabel.setForeground(Color.black);
         add(dateLabel);
@@ -65,13 +66,14 @@ public class MTSsimApp extends JPanel {
 
         JButton saveHistoryButton = new JButton("Сохранить в файл");
         saveHistoryButton.setBackground(Color.green);
+        saveHistoryButton.setOpaque(true);
+        saveHistoryButton.setBorderPainted(false);
+        saveHistoryButton.setFocusPainted(false);
         saveHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
         add(saveHistoryButton);
         saveHistoryButton.addActionListener(_ -> {
             try {
-                String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-
-                fileManager.formatPaymentDate(fileName, daysUntilPayment, daysFromPayment, nextPayment, previousPayment, priceTariff, formattedDateTime);
+                fileManager.formatPaymentDate(fileName, daysUntilPayment, daysFromPayment, nextPayment, previousPayment, priceTariff, FormattedDateTime);
                 JOptionPane.showMessageDialog(this, "Данные успешно сохранены!", "Успех", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Ошибка сохранения данных: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
@@ -80,7 +82,9 @@ public class MTSsimApp extends JPanel {
 
         // Кнопка для загрузки истории
         JButton showHistoryButton = new JButton("Показать историю");
-        showHistoryButton.setBackground(Color.getHSBColor(0.99f, 0.29f, 0.94f));
+        showHistoryButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
+        showHistoryButton.setOpaque(true);
+        showHistoryButton.setBorderPainted(false);
         showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
         add(showHistoryButton);
         showHistoryButton.addActionListener(_ -> {

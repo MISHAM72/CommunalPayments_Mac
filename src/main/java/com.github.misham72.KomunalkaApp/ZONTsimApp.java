@@ -22,7 +22,7 @@ public class ZONTsimApp extends JPanel {
 		LocalDate nextPayment = DateCalculator.getNextPaymentDate(1, 30);
 		LocalDate previousPayment = DateCalculator.getPreviousPaymentDate(1, 30);
 		long priceTariff = 120;
-		String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+		String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy / HH:mm:ss"));
 
 		// Настройки панели
 		setLayout(new GridLayout(7, 2, 10, 10));
@@ -70,13 +70,18 @@ public class ZONTsimApp extends JPanel {
 		// Кнопка "Сохранить данные"
 		JButton saveHistoryButton = new JButton("Сохранить в файл");
 		saveHistoryButton.setBackground(Color.green);
+        saveHistoryButton.setOpaque(true);
+        saveHistoryButton.setBorderPainted(false);
+        saveHistoryButton.setFocusPainted(false);
 		saveHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(saveHistoryButton);
 
 
 		JButton showHistoryButton = new JButton("Показать историю");
-		showHistoryButton.setBackground(Color.getHSBColor(0.99f, 0.29f, 0.94f));
-		showHistoryButton.setFont(new Font("Arial", Font.BOLD, 18));
+		showHistoryButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
+        showHistoryButton.setOpaque(true);
+        showHistoryButton.setBorderPainted(false);
+		showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(showHistoryButton);
 
 		saveHistoryButton.addActionListener(_ -> {

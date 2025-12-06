@@ -23,7 +23,7 @@ public class GarbageApp extends JPanel {
 		final LocalDate nextPayment = DateCalculator.getNextPaymentDate(1, 30);
 		final LocalDate previousPayment = DateCalculator.getPreviousPaymentDate(1, 30);
 		final long priceTariff = 214;
-		final String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+		final String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy / HH:mm:ss"));
 
 		setLayout(new GridLayout(7, 2, 10, 10));
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Добавляем отступы
@@ -67,6 +67,9 @@ public class GarbageApp extends JPanel {
 		// Кнопка для сохранения данных
 		JButton saveHistoryButton = new JButton("Сохранить в файл");
 		saveHistoryButton.setBackground(Color.green);
+        saveHistoryButton.setOpaque(true);
+        saveHistoryButton.setBorderPainted(false);
+        saveHistoryButton.setFocusPainted(false);
 		saveHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(saveHistoryButton);
 		saveHistoryButton.addActionListener(_ -> {
@@ -80,7 +83,9 @@ public class GarbageApp extends JPanel {
 
 		// Кнопка для загрузки истории
 		JButton showHistoryButton = new JButton("Показать историю");
-		showHistoryButton.setBackground(Color.getHSBColor(0.99f, 0.29f, 0.94f));
+		showHistoryButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
+        showHistoryButton.setOpaque(true);
+        showHistoryButton.setBorderPainted(false);
 		showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(showHistoryButton);
 		showHistoryButton.addActionListener(_ -> {
@@ -98,8 +103,10 @@ public class GarbageApp extends JPanel {
 					JScrollPane scrollPane = new JScrollPane(textArea);
 					// Создаем кнопку сохранения
 					JButton saveButton = new JButton("Сохранить");
-					saveButton.setFont(new Font("Arial", Font.BOLD, 14));
 					saveButton.setBackground(new Color(144, 238, 144)); // Светло-зеленый цвет
+                    saveButton.setOpaque(true);
+                    saveButton.setBorderPainted(false);
+                    saveButton.setFont(new Font("Arial", Font.BOLD, 14));
 
 					// Создаем панель для кнопки (чтобы выровнять по правому краю)
 					JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));

@@ -24,7 +24,7 @@ public class TINKOFFsimApp extends JPanel {
         LocalDate nextPayment = DateCalculator.getNextPaymentDate(1, 23);
         LocalDate previousPayment = DateCalculator.getPreviousPaymentDate(1, 23);
         long priceTariff = 402;
-        String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy / HH:mm:ss"));
 
 
         setLayout(new GridLayout(7, 2, 10, 10));
@@ -68,12 +68,17 @@ public class TINKOFFsimApp extends JPanel {
 
         JButton saveHistoryButton = new JButton("Сохранить в файл");
         saveHistoryButton.setBackground(Color.green);
-        saveHistoryButton.setFont(FONT_ARIAL_BOLD_18);
+        saveHistoryButton.setOpaque(true);
+        saveHistoryButton.setBorderPainted(false);
+        saveHistoryButton.setFocusPainted(false);
+        saveHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
         add(saveHistoryButton);
 
         JButton showHistoryButton = new JButton("Показать историю");
-        showHistoryButton.setBackground(Color.getHSBColor(0.99f, 0.29f, 0.94f));
-        showHistoryButton.setFont(FONT_ARIAL_BOLD_18);
+        showHistoryButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
+        showHistoryButton.setOpaque(true);
+        showHistoryButton.setBorderPainted(false);
+        showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
         add(showHistoryButton);
 
 

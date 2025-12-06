@@ -17,13 +17,15 @@ public class RouterApp extends JPanel {
 	public RouterApp() {
 		this.fileManager = new FileManager();
 		/*-------------------- */
-		LocalDate date = LocalDate.now();
-		long daysUntilPayment = DateCalculator.calculateDaysToNextPayment(1, 30);
+
+        long daysUntilPayment = DateCalculator.calculateDaysToNextPayment(1, 30);
 		long daysFromPayment = DateCalculator.calculateDaysFromPreviousPayment(1, 30);
 		LocalDate nextPayment = DateCalculator.getNextPaymentDate(1, 30);
 		LocalDate previousPayment = DateCalculator.getPreviousPaymentDate(1, 30);
 		long priceTariff = 950;
-		/*-------------------- */
+        String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy / HH:mm:ss"));
+
+        /*-------------------- */
 
 		setLayout(new GridLayout(7, 2, 10, 10));
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Добавляем отступы
@@ -33,7 +35,7 @@ public class RouterApp extends JPanel {
 		previousPaymentLabel.setForeground(Color.blue);
 		add(previousPaymentLabel);
 		/*-------------------- */
-		JLabel dateLabel = new JLabel(" Сегодня:          " + date);
+		JLabel dateLabel = new JLabel(" Сегодня:          " + formattedDateTime);
 		dateLabel.setFont(new Font("Arial", Font.BOLD, 18));
 		dateLabel.setForeground(Color.black);
 		add(dateLabel);
@@ -68,6 +70,9 @@ public class RouterApp extends JPanel {
 		// Кнопка для сохранения данных
 		JButton saveHistoryButton = new JButton("Сохранить в файл");
 		saveHistoryButton.setBackground(Color.green);
+        saveHistoryButton.setOpaque(true);
+        saveHistoryButton.setBorderPainted(false);
+        saveHistoryButton.setFocusPainted(false);
 		saveHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(saveHistoryButton);
 		/*-------------------- */
@@ -75,7 +80,6 @@ public class RouterApp extends JPanel {
 		// и представляет собой пользовательский интерфейс для работы с данными о платежах.
 		saveHistoryButton.addActionListener(_ -> {
 			try {
-				String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 
 				// Сохранение данных в файл
 				fileManager.formatPaymentDate(fileName, daysUntilPayment, daysFromPayment, nextPayment, previousPayment, priceTariff, formattedDateTime);
@@ -87,7 +91,9 @@ public class RouterApp extends JPanel {
 		/*-------------------- */
 		// Кнопка для загрузки истории
 		JButton showHistoryButton = new JButton("Показать историю");
-		showHistoryButton.setBackground(Color.getHSBColor(0.99f, 0.29f, 0.94f));
+		showHistoryButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
+        showHistoryButton.setOpaque(true);
+        showHistoryButton.setBorderPainted(false);
 		showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(showHistoryButton);
 		showHistoryButton.addActionListener(_ -> {

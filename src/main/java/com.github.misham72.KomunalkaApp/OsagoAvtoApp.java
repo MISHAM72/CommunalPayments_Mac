@@ -9,18 +9,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class OsagoAvto extends JPanel {
+public class OsagoAvtoApp extends JPanel {
 	private final FileManager fileManager;
     private final String fileName = FileManager.getFilePath("Автострховане.txt");
 
-	public OsagoAvto() {
+	public OsagoAvtoApp(){
 		this.fileManager = new FileManager();
-		LocalDate date = LocalDate.now();
+
 		long daysUntilPayment = DateCalculator.calculateDaysToNextPayment(12, 27);
 		long daysFromPayment = DateCalculator.calculateDaysFromPreviousPayment(12, 27);
 		LocalDate nextPayment = DateCalculator.getNextPaymentDate(12, 27);
 		LocalDate previousPayment = DateCalculator.getPreviousPaymentDate(12, 27);
 		long priceTariff = 7530;
+        String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy / HH:mm:ss"));
 
 		setLayout(new GridLayout(7, 2, 10, 10));
 		setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Добавляем отступы
@@ -30,7 +31,7 @@ public class OsagoAvto extends JPanel {
 		previousPaymentLabel.setForeground(Color.blue);
 		add(previousPaymentLabel);
 
-		JLabel dateLabel = new JLabel(" Сегодня:          " + date);
+		JLabel dateLabel = new JLabel(" Сегодня:          " + formattedDateTime);
 		dateLabel.setFont(new Font("Arial", Font.BOLD, 18));
 		dateLabel.setForeground(Color.black);
 		add(dateLabel);
@@ -65,12 +66,14 @@ public class OsagoAvto extends JPanel {
 		// Кнопка для сохранения данных
 		JButton saveHistoryButton = new JButton("Сохранить в файл");
 		saveHistoryButton.setBackground(Color.green);
+        saveHistoryButton.setOpaque(true);
+        saveHistoryButton.setBorderPainted(false);
+        saveHistoryButton.setFocusPainted(false);
 		saveHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(saveHistoryButton);
 
 		saveHistoryButton.addActionListener(_ -> {
 			try {
-				String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 				fileManager. formatPaymentDate(fileName, daysUntilPayment, daysFromPayment, nextPayment, previousPayment, priceTariff, formattedDateTime);
 				JOptionPane.showMessageDialog(this, "Данные успешно сохранены!", "Успех", JOptionPane.INFORMATION_MESSAGE);
 			} catch (IOException ex) {
@@ -80,7 +83,9 @@ public class OsagoAvto extends JPanel {
 
 		// Кнопка для загрузки истории/
 		JButton showHistoryButton = new JButton("Показать историю");
-		showHistoryButton.setBackground(Color.getHSBColor(0.99f, 0.29f, 0.94f));
+		showHistoryButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
+        showHistoryButton.setOpaque(true);
+        showHistoryButton.setBorderPainted(false);
 		showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 		add(showHistoryButton);
 
