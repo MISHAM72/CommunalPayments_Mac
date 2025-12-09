@@ -13,7 +13,7 @@ public class WaterApp extends JPanel{
 
         private final KomunalkaCalculator calculator;
         private final FileManager fileManager;
-        private final String fileName = FileManager.getFilePath("Вода.txt");
+        private final String fileName = FileManager.getFilePath("Water.txt");
 
         public WaterApp() {
             this.calculator = new KomunalkaCalculator();
@@ -40,7 +40,7 @@ public class WaterApp extends JPanel{
             dateTimeLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
             JButton calculateButton = new JButton("Рассчитать");
-            calculateButton.setBackground(Color.green);
+            calculateButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
             calculateButton.setOpaque(true);
             calculateButton.setBorderPainted(false);
             calculateButton.setFont(new Font("Arial", Font.BOLD, 16));

@@ -13,6 +13,10 @@ public class KomunalkaApp {
 
         // Инициализируем фрейм
         JFrame frame = new JFrame("Communal Payments");
+        frame.setFont(new Font("Arial",Font.BOLD,26));
+
+
+
         frame.setSize(1200, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Создаём панели вкладок
@@ -30,8 +34,10 @@ public class KomunalkaApp {
         tabbedPane.addTab("ИП-налоги", new TaxesIP());
         tabbedPane.addTab("Страхование ОСАГО ", new OsagoAvtoApp());
         tabbedPane.addTab("Troyka", new TroykaApp());
+        tabbedPane.setFont(new Font("Arial", Font.BOLD, 14));
         // Добавляем TabbedPane в окно
         frame.add(tabbedPane, BorderLayout.CENTER);
+
         // Отображаем фрейм
         System.out.println("Отображаем окно...");
         frame.setVisible(true);
