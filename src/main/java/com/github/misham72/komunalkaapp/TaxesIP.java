@@ -64,7 +64,7 @@ public class TaxesIP  extends JPanel {
         add(calculateButton);
 
         // Метки для вывода информации (изначально пустые или с дефолтным текстом)
-        JLabel previousPaymentLabel = new JLabel(" Предыдущая оплата:   -");
+        JLabel previousPaymentLabel = new JLabel(" Оплата была:   -");
         previousPaymentLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Чуть уменьшил шрифт, чтобы влезало
         previousPaymentLabel.setForeground(Color.blue);
         add(previousPaymentLabel);
@@ -115,7 +115,7 @@ public class TaxesIP  extends JPanel {
                 previousPayment = DateCalculator.getPreviousPaymentDate(monthsPeriod, paymentDay);
 
                 // Обновляем метки
-                previousPaymentLabel.setText(" Oплата была:                 " + previousPayment);
+                previousPaymentLabel.setText(" Оплата была:                 " + previousPayment);
                 dayOfPaymentLabel.setText(" Дата оплаты:                  " + nextPayment);
                 daysUntilPaymentLabel.setText(" Оплата через:                 " + daysUntilPayment + " дней.");
                 daysFromPaymentLabel.setText(" Прошло:                           " + daysFromPayment + " дней,");
@@ -165,26 +165,33 @@ public class TaxesIP  extends JPanel {
         add(showHistoryButton);
         showHistoryButton.addActionListener(_ -> {
             try {
-
                 String history = fileManager.loadFromFile(fileName);
                 if (history.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "История пуста для ресурса: Taxes", "Информация", JOptionPane.INFORMATION_MESSAGE);
                 } else {
+                    // Используем JTextArea, вместо JTextPane для простоты (без цветов)
                     JTextArea textArea = new JTextArea(20, 50);
                     textArea.setText(history);
                     textArea.setEditable(true);
 
                     JScrollPane scrollPane = new JScrollPane(textArea);
-                    // Создаем кнопку сохранения
-                    JButton saveButton = new JButton("Сохранить");
+
+                    // Создаем две кнопки
+                    JButton markPaidButton = new JButton("✅ ОПЛАЧЕНО");
+                    markPaidButton.setFont(new Font("Arial", Font.BOLD, 14));
+                    markPaidButton.setBackground(new Color(200, 255, 200));
+                    markPaidButton.setOpaque(true);
+                    markPaidButton.setBorderPainted(false);
+
+                    JButton saveButton = new JButton("💾 Сохранить");
                     saveButton.setFont(new Font("Arial", Font.BOLD, 14));
                     saveButton.setBackground(new Color(144, 238, 144)); // Светло-зеленый цвет
                     saveButton.setOpaque(true);
                     saveButton.setBorderPainted(false);
-                    saveButton.setFocusPainted(false);
 
                     // Создаем панель для кнопки (чтобы выровнять по правому краю)
                     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                    buttonPanel.add(markPaidButton);
                     buttonPanel.add(saveButton);
 
                     // Создаем основную панель для содержимого
@@ -199,7 +206,30 @@ public class TaxesIP  extends JPanel {
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.getContentPane().add(mainPanel);
                     dialog.pack();
+                    dialog.setSize(800, 600);
                     dialog.setLocationRelativeTo(this);
+
+                    // Обработчик кнопки "✅ ОПЛАЧЕНО"
+                    markPaidButton.addActionListener(_ -> {
+                        try {
+                            int caretPos = textArea.getCaretPosition();
+                            int lineNum = textArea.getLineOfOffset(caretPos);
+                            int start = textArea.getLineStartOffset(lineNum);
+                            int end = textArea.getLineEndOffset(lineNum);
+
+                            // (убираем перевод строки)
+                            String lineText = textArea.getText(start, end - start);
+                            lineText = lineText.replace("\n", "").replace("\r", "");
+
+                            // Если строка еще не помечена
+                            if (!lineText.startsWith("[ОПЛАЧЕНО]")) {
+                                // Заменяем строку
+                                textArea.replaceRange("[ОПЛАЧЕНО] " + lineText, start, end);
+                            }
+                        } catch (Exception ex) {
+                            // Игнорируем ошибки курсора
+                        }
+                    });
 
                     // Обработчик кнопки сохранения
                     saveButton.addActionListener(_ -> {
@@ -220,7 +250,6 @@ public class TaxesIP  extends JPanel {
                     // Показываем диалоговое окно
                     dialog.setVisible(true);
                 }
-
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Ошибка загрузки истории: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
             }
