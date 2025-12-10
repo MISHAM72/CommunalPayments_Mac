@@ -1,6 +1,6 @@
-package com.github.misham72.KomunalkaApp;
+package com.github.misham72.komunalkaapp;
 
-import com.github.misham72.KomunalkaFileManager.FileManager;
+import com.github.misham72.komunalkafilemanager.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.prefs.Preferences;
 
-public class MTSsimApp extends JPanel {
+public class TroykaApp extends JPanel {
     private final FileManager fileManager;
-    private final String fileName = FileManager.getFilePath("MTS.txt");
+    private final String fileName = FileManager.getFilePath("Troyka.txt");
 
     // 2. Получаем доступ к хранилищу настроек
     private final Preferences prefs = Preferences.userNodeForPackage(MTSsimApp.class);
 
     // Ключи для сохранения настроек
-    private static final String PREF_PAYMENT_DAY = "MTS_PAYMENT_DAY";
-    private static final String PREF_PERIOD = "MTS_PERIOD";
-    private static final String PREF_TARIFF = "MTS_TARIFF";
+    private static final String PREF_PAYMENT_DAY = "Troyka_PAYMENT_DAY";
+    private static final String PREF_PERIOD = "Troyka_PERIOD";
+    private static final String PREF_TARIFF = "Troyka_TARIFF";
 
 
     // Поля для хранения рассчитанных значений, чтобы их можно было использовать при сохранении.
@@ -29,7 +29,7 @@ public class MTSsimApp extends JPanel {
     private LocalDate nextPayment;
     private LocalDate previousPayment;
 
-    public MTSsimApp() {
+    public TroykaApp() {
         this.fileManager = new FileManager();
         LocalDate date = LocalDate.now();
 
@@ -40,17 +40,17 @@ public class MTSsimApp extends JPanel {
         // Поля ввода
         add(new JLabel("День оплаты (число):"));
         // Получаем значение из настроек, если нет берем "23"
-        String savedDay = prefs.get(PREF_PAYMENT_DAY, "23");
+        String savedDay = prefs.get(PREF_PAYMENT_DAY, "24");
         JTextField paymentDayField = new JTextField(savedDay); // Значение по умолчанию
         add(paymentDayField);
 
         add(new JLabel("Период (мес.):"));
-        String savedPeriod = prefs.get(PREF_PERIOD, "1");
+        String savedPeriod = prefs.get(PREF_PERIOD, "12");
         JTextField periodField = new JTextField(savedPeriod); // Значение по умолчанию
         add(periodField);
 
         add(new JLabel("Стоимость тарифа (руб.):"));
-        String savedTariff = prefs.get(PREF_TARIFF, "905");
+        String savedTariff = prefs.get(PREF_TARIFF, "22650");
         JTextField tariffField = new JTextField(savedTariff); // Значение по умолчанию
         add(tariffField);
 
@@ -60,12 +60,11 @@ public class MTSsimApp extends JPanel {
         calculateButton.setOpaque(true);
         calculateButton.setBorderPainted(false);
         calculateButton.setFocusPainted(false);
-        calculateButton.setFont(new Font("Arial", Font.BOLD, 14));
+        calculateButton.setFont(new Font("Arial", Font.BOLD, 16));
         add(calculateButton);
 
-
         // Метки для вывода информации (изначально пустые или с дефолтным текстом)
-        JLabel previousPaymentLabel = new JLabel(" Оплата была:   -");
+        JLabel previousPaymentLabel = new JLabel(" Предыдущая оплата:   -");
         previousPaymentLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Чуть уменьшил шрифт, чтобы влезало
         previousPaymentLabel.setForeground(Color.blue);
         add(previousPaymentLabel);
@@ -76,8 +75,6 @@ public class MTSsimApp extends JPanel {
         daysFromPaymentLabel.setForeground(Color.blue);
         add(daysFromPaymentLabel);
         add(new JLabel());
-
-
 
         JLabel dayOfPaymentLabel = new JLabel(" Дата оплаты:                 -");
         dayOfPaymentLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -171,7 +168,7 @@ public class MTSsimApp extends JPanel {
 
                 String history = fileManager.loadFromFile(fileName);
                 if (history.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: MTS", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: Troyka", "Информация", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JTextArea textArea = new JTextArea(20, 50);
                     textArea.setText(history);
@@ -198,7 +195,7 @@ public class MTSsimApp extends JPanel {
 
                     // Создаем диалоговое окно
                     JDialog dialog = new JDialog();
-                    dialog.setTitle("История (МТС) - Редактирование");
+                    dialog.setTitle("История (Troyka) - Редактирование");
                     dialog.setModal(true);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.getContentPane().add(mainPanel);

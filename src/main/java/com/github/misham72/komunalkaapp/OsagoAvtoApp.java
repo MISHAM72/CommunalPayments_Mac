@@ -1,6 +1,6 @@
-package com.github.misham72.KomunalkaApp;
+package com.github.misham72.komunalkaapp;
 
-import com.github.misham72.KomunalkaFileManager.FileManager;
+import com.github.misham72.komunalkafilemanager.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.prefs.Preferences;
 
-public class TaxesIP  extends JPanel {
+public class OsagoAvtoApp extends JPanel {
     private final FileManager fileManager;
-    private final String fileName = FileManager.getFilePath("Taxes.txt");
+    private final String fileName = FileManager.getFilePath("OsagoAvto.txt");
 
     // 2. Получаем доступ к хранилищу настроек
     private final Preferences prefs = Preferences.userNodeForPackage(MTSsimApp.class);
 
     // Ключи для сохранения настроек
-    private static final String PREF_PAYMENT_DAY = "Taxes_PAYMENT_DAY";
-    private static final String PREF_PERIOD = "Taxes_PERIOD";
-    private static final String PREF_TARIFF = "Taxes_TARIFF";
+    private static final String PREF_PAYMENT_DAY = "OsagoAvto_PAYMENT_DAY";
+    private static final String PREF_PERIOD = "OsagoAvto_PERIOD";
+    private static final String PREF_TARIFF = "OsagoAvto_TARIFF";
 
 
     // Поля для хранения рассчитанных значений, чтобы их можно было использовать при сохранении.
@@ -29,7 +29,7 @@ public class TaxesIP  extends JPanel {
     private LocalDate nextPayment;
     private LocalDate previousPayment;
 
-    public TaxesIP() {
+    public OsagoAvtoApp() {
         this.fileManager = new FileManager();
         LocalDate date = LocalDate.now();
 
@@ -40,17 +40,17 @@ public class TaxesIP  extends JPanel {
         // Поля ввода
         add(new JLabel("День оплаты (число):"));
         // Получаем значение из настроек, если нет берем "23"
-        String savedDay = prefs.get(PREF_PAYMENT_DAY, "30");
+        String savedDay = prefs.get(PREF_PAYMENT_DAY, "27");
         JTextField paymentDayField = new JTextField(savedDay); // Значение по умолчанию
         add(paymentDayField);
 
         add(new JLabel("Период (мес.):"));
-        String savedPeriod = prefs.get(PREF_PERIOD, "3");
+        String savedPeriod = prefs.get(PREF_PERIOD, "12");
         JTextField periodField = new JTextField(savedPeriod); // Значение по умолчанию
         add(periodField);
 
         add(new JLabel("Стоимость тарифа (руб.):"));
-        String savedTariff = prefs.get(PREF_TARIFF, "13414");
+        String savedTariff = prefs.get(PREF_TARIFF, "7530");
         JTextField tariffField = new JTextField(savedTariff); // Значение по умолчанию
         add(tariffField);
 
@@ -168,7 +168,7 @@ public class TaxesIP  extends JPanel {
 
                 String history = fileManager.loadFromFile(fileName);
                 if (history.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: Taxes", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: OsagoAvto", "Информация", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JTextArea textArea = new JTextArea(20, 50);
                     textArea.setText(history);
@@ -183,6 +183,7 @@ public class TaxesIP  extends JPanel {
                     saveButton.setBorderPainted(false);
                     saveButton.setFocusPainted(false);
 
+
                     // Создаем панель для кнопки (чтобы выровнять по правому краю)
                     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
                     buttonPanel.add(saveButton);
@@ -194,7 +195,7 @@ public class TaxesIP  extends JPanel {
 
                     // Создаем диалоговое окно
                     JDialog dialog = new JDialog();
-                    dialog.setTitle("История (Taxes) - Редактирование");
+                    dialog.setTitle("История OsagoAvto) - Редактирование");
                     dialog.setModal(true);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.getContentPane().add(mainPanel);

@@ -1,7 +1,7 @@
-package com.github.misham72.KomunalkaApp;
+package com.github.misham72.komunalkaapp;
 
-import com.github.misham72.KomunalkaCalculator.KomunalkaCalculator;
-import com.github.misham72.KomunalkaFileManager.FileManager;
+import com.github.misham72.komunalkacalculator.KomunalkaCalculator;
+import com.github.misham72.komunalkafilemanager.FileManager;
 
 import javax.swing.*;
 import java.awt.*;

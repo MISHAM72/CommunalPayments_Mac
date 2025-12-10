@@ -1,6 +1,6 @@
-package com.github.misham72.KomunalkaApp;
+package com.github.misham72.komunalkaapp;
 
-import com.github.misham72.KomunalkaFileManager.FileManager;
+import com.github.misham72.komunalkafilemanager.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.prefs.Preferences;
 
-public class OsagoAvtoApp extends JPanel {
+public class TINKOFFsimApp extends JPanel {
     private final FileManager fileManager;
-    private final String fileName = FileManager.getFilePath("OsagoAvto.txt");
+    private final String fileName = FileManager.getFilePath("Tinkoff.txt");
 
     // 2. Получаем доступ к хранилищу настроек
     private final Preferences prefs = Preferences.userNodeForPackage(MTSsimApp.class);
 
     // Ключи для сохранения настроек
-    private static final String PREF_PAYMENT_DAY = "OsagoAvto_PAYMENT_DAY";
-    private static final String PREF_PERIOD = "OsagoAvto_PERIOD";
-    private static final String PREF_TARIFF = "OsagoAvto_TARIFF";
+    private static final String PREF_PAYMENT_DAY = "Tinkoff_PAYMENT_DAY";
+    private static final String PREF_PERIOD = "Tinkoff_PERIOD";
+    private static final String PREF_TARIFF = "Tinkoff_TARIFF";
 
 
     // Поля для хранения рассчитанных значений, чтобы их можно было использовать при сохранении.
@@ -29,7 +29,7 @@ public class OsagoAvtoApp extends JPanel {
     private LocalDate nextPayment;
     private LocalDate previousPayment;
 
-    public OsagoAvtoApp() {
+    public TINKOFFsimApp() {
         this.fileManager = new FileManager();
         LocalDate date = LocalDate.now();
 
@@ -40,17 +40,17 @@ public class OsagoAvtoApp extends JPanel {
         // Поля ввода
         add(new JLabel("День оплаты (число):"));
         // Получаем значение из настроек, если нет берем "23"
-        String savedDay = prefs.get(PREF_PAYMENT_DAY, "27");
+        String savedDay = prefs.get(PREF_PAYMENT_DAY, "23");
         JTextField paymentDayField = new JTextField(savedDay); // Значение по умолчанию
         add(paymentDayField);
 
         add(new JLabel("Период (мес.):"));
-        String savedPeriod = prefs.get(PREF_PERIOD, "12");
+        String savedPeriod = prefs.get(PREF_PERIOD, "1");
         JTextField periodField = new JTextField(savedPeriod); // Значение по умолчанию
         add(periodField);
 
         add(new JLabel("Стоимость тарифа (руб.):"));
-        String savedTariff = prefs.get(PREF_TARIFF, "7530");
+        String savedTariff = prefs.get(PREF_TARIFF, "402");
         JTextField tariffField = new JTextField(savedTariff); // Значение по умолчанию
         add(tariffField);
 
@@ -168,7 +168,7 @@ public class OsagoAvtoApp extends JPanel {
 
                 String history = fileManager.loadFromFile(fileName);
                 if (history.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: OsagoAvto", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: TINKOFF", "Информация", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JTextArea textArea = new JTextArea(20, 50);
                     textArea.setText(history);
@@ -195,7 +195,7 @@ public class OsagoAvtoApp extends JPanel {
 
                     // Создаем диалоговое окно
                     JDialog dialog = new JDialog();
-                    dialog.setTitle("История OsagoAvto) - Редактирование");
+                    dialog.setTitle("История (TINKOFF) - Редактирование");
                     dialog.setModal(true);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.getContentPane().add(mainPanel);
@@ -226,7 +226,6 @@ public class OsagoAvtoApp extends JPanel {
                 JOptionPane.showMessageDialog(this, "Ошибка загрузки истории: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
             }
         });
-
     }
 }
 

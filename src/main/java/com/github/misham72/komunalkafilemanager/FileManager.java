@@ -1,4 +1,4 @@
-package com.github.misham72.KomunalkaFileManager;
+package com.github.misham72.komunalkafilemanager;
 
 import java.io.File;
 import java.io.IOException;

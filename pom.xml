@@ -39,7 +39,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.github.misham72.KomunalkaMain.KomunalkaMain</mainClass>
+                                    <mainClass>com.github.misham72.komunalkamain.KomunalkaMain</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

@@ -1,4 +1,4 @@
- package com.github.misham72.KomunalkaCalculator;
+ package com.github.misham72.komunalkacalculator;
 
 //      Класс, занимающийся исключительно
 //      расчетами расхода электроэнергии

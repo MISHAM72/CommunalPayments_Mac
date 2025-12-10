@@ -1,6 +1,6 @@
-package com.github.misham72.KomunalkaMain;
+package com.github.misham72.komunalkamain;
 
-import com.github.misham72.KomunalkaApp.KomunalkaApp;
+import com.github.misham72.komunalkaapp.KomunalkaApp;
 
 public class KomunalkaMain {
        public static void main(String[] args) {

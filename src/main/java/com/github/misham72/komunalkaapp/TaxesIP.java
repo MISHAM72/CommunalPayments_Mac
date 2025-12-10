@@ -1,6 +1,6 @@
-package com.github.misham72.KomunalkaApp;
+package com.github.misham72.komunalkaapp;
 
-import com.github.misham72.KomunalkaFileManager.FileManager;
+import com.github.misham72.komunalkafilemanager.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,18 +10,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.prefs.Preferences;
 
-
-public class ZONTsimApp extends JPanel {
+public class TaxesIP  extends JPanel {
     private final FileManager fileManager;
-    private final String fileName = FileManager.getFilePath("ZONT.txt");
+    private final String fileName = FileManager.getFilePath("Taxes.txt");
 
     // 2. Получаем доступ к хранилищу настроек
     private final Preferences prefs = Preferences.userNodeForPackage(MTSsimApp.class);
 
     // Ключи для сохранения настроек
-    private static final String PREF_PAYMENT_DAY = "ZONT_PAYMENT_DAY";
-    private static final String PREF_PERIOD = "ZONT_PERIOD";
-    private static final String PREF_TARIFF = "ZONT_TARIFF";
+    private static final String PREF_PAYMENT_DAY = "Taxes_PAYMENT_DAY";
+    private static final String PREF_PERIOD = "Taxes_PERIOD";
+    private static final String PREF_TARIFF = "Taxes_TARIFF";
 
 
     // Поля для хранения рассчитанных значений, чтобы их можно было использовать при сохранении.
@@ -30,7 +29,7 @@ public class ZONTsimApp extends JPanel {
     private LocalDate nextPayment;
     private LocalDate previousPayment;
 
-    public ZONTsimApp() {
+    public TaxesIP() {
         this.fileManager = new FileManager();
         LocalDate date = LocalDate.now();
 
@@ -46,12 +45,12 @@ public class ZONTsimApp extends JPanel {
         add(paymentDayField);
 
         add(new JLabel("Период (мес.):"));
-        String savedPeriod = prefs.get(PREF_PERIOD, "1");
+        String savedPeriod = prefs.get(PREF_PERIOD, "3");
         JTextField periodField = new JTextField(savedPeriod); // Значение по умолчанию
         add(periodField);
 
         add(new JLabel("Стоимость тарифа (руб.):"));
-        String savedTariff = prefs.get(PREF_TARIFF, "120");
+        String savedTariff = prefs.get(PREF_TARIFF, "13414");
         JTextField tariffField = new JTextField(savedTariff); // Значение по умолчанию
         add(tariffField);
 
@@ -64,9 +63,8 @@ public class ZONTsimApp extends JPanel {
         calculateButton.setFont(new Font("Arial", Font.BOLD, 16));
         add(calculateButton);
 
-
         // Метки для вывода информации (изначально пустые или с дефолтным текстом)
-        JLabel previousPaymentLabel = new JLabel(" Оплата была:   -");
+        JLabel previousPaymentLabel = new JLabel(" Предыдущая оплата:   -");
         previousPaymentLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Чуть уменьшил шрифт, чтобы влезало
         previousPaymentLabel.setForeground(Color.blue);
         add(previousPaymentLabel);
@@ -77,8 +75,6 @@ public class ZONTsimApp extends JPanel {
         daysFromPaymentLabel.setForeground(Color.blue);
         add(daysFromPaymentLabel);
         add(new JLabel());
-
-
 
         JLabel dayOfPaymentLabel = new JLabel(" Дата оплаты:                 -");
         dayOfPaymentLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -172,7 +168,7 @@ public class ZONTsimApp extends JPanel {
 
                 String history = fileManager.loadFromFile(fileName);
                 if (history.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: ZONT", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: Taxes", "Информация", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JTextArea textArea = new JTextArea(20, 50);
                     textArea.setText(history);
@@ -187,7 +183,6 @@ public class ZONTsimApp extends JPanel {
                     saveButton.setBorderPainted(false);
                     saveButton.setFocusPainted(false);
 
-
                     // Создаем панель для кнопки (чтобы выровнять по правому краю)
                     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
                     buttonPanel.add(saveButton);
@@ -199,7 +194,7 @@ public class ZONTsimApp extends JPanel {
 
                     // Создаем диалоговое окно
                     JDialog dialog = new JDialog();
-                    dialog.setTitle("История (ZONT) - Редактирование");
+                    dialog.setTitle("История (Taxes) - Редактирование");
                     dialog.setModal(true);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.getContentPane().add(mainPanel);
@@ -233,3 +228,4 @@ public class ZONTsimApp extends JPanel {
 
     }
 }
+

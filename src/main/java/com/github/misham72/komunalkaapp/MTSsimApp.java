@@ -1,6 +1,6 @@
-package com.github.misham72.KomunalkaApp;
+package com.github.misham72.komunalkaapp;
 
-import com.github.misham72.KomunalkaFileManager.FileManager;
+import com.github.misham72.komunalkafilemanager.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.prefs.Preferences;
 
-public class RouterApp extends JPanel {
+public class MTSsimApp extends JPanel {
     private final FileManager fileManager;
-    private final String fileName = FileManager.getFilePath("Router.txt");
+    private final String fileName = FileManager.getFilePath("MTS.txt");
 
     // 2. Получаем доступ к хранилищу настроек
     private final Preferences prefs = Preferences.userNodeForPackage(MTSsimApp.class);
 
     // Ключи для сохранения настроек
-    private static final String PREF_PAYMENT_DAY = "Router_PAYMENT_DAY";
-    private static final String PREF_PERIOD = "Router_PERIOD";
-    private static final String PREF_TARIFF = "Router_TARIFF";
+    private static final String PREF_PAYMENT_DAY = "MTS_PAYMENT_DAY";
+    private static final String PREF_PERIOD = "MTS_PERIOD";
+    private static final String PREF_TARIFF = "MTS_TARIFF";
 
 
     // Поля для хранения рассчитанных значений, чтобы их можно было использовать при сохранении.
@@ -29,7 +29,7 @@ public class RouterApp extends JPanel {
     private LocalDate nextPayment;
     private LocalDate previousPayment;
 
-    public RouterApp() {
+    public MTSsimApp() {
         this.fileManager = new FileManager();
         LocalDate date = LocalDate.now();
 
@@ -40,7 +40,7 @@ public class RouterApp extends JPanel {
         // Поля ввода
         add(new JLabel("День оплаты (число):"));
         // Получаем значение из настроек, если нет берем "23"
-        String savedDay = prefs.get(PREF_PAYMENT_DAY, "30");
+        String savedDay = prefs.get(PREF_PAYMENT_DAY, "23");
         JTextField paymentDayField = new JTextField(savedDay); // Значение по умолчанию
         add(paymentDayField);
 
@@ -50,7 +50,7 @@ public class RouterApp extends JPanel {
         add(periodField);
 
         add(new JLabel("Стоимость тарифа (руб.):"));
-        String savedTariff = prefs.get(PREF_TARIFF, "950");
+        String savedTariff = prefs.get(PREF_TARIFF, "905");
         JTextField tariffField = new JTextField(savedTariff); // Значение по умолчанию
         add(tariffField);
 
@@ -60,7 +60,7 @@ public class RouterApp extends JPanel {
         calculateButton.setOpaque(true);
         calculateButton.setBorderPainted(false);
         calculateButton.setFocusPainted(false);
-        calculateButton.setFont(new Font("Arial", Font.BOLD, 16));
+        calculateButton.setFont(new Font("Arial", Font.BOLD, 14));
         add(calculateButton);
 
 
@@ -76,6 +76,8 @@ public class RouterApp extends JPanel {
         daysFromPaymentLabel.setForeground(Color.blue);
         add(daysFromPaymentLabel);
         add(new JLabel());
+
+
 
         JLabel dayOfPaymentLabel = new JLabel(" Дата оплаты:                 -");
         dayOfPaymentLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -169,7 +171,7 @@ public class RouterApp extends JPanel {
 
                 String history = fileManager.loadFromFile(fileName);
                 if (history.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: Router", "Информация", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "История пуста для ресурса: MTS", "Информация", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JTextArea textArea = new JTextArea(20, 50);
                     textArea.setText(history);
@@ -196,7 +198,7 @@ public class RouterApp extends JPanel {
 
                     // Создаем диалоговое окно
                     JDialog dialog = new JDialog();
-                    dialog.setTitle("История (Router) - Редактирование");
+                    dialog.setTitle("История (МТС) - Редактирование");
                     dialog.setModal(true);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.getContentPane().add(mainPanel);
@@ -227,6 +229,7 @@ public class RouterApp extends JPanel {
                 JOptionPane.showMessageDialog(this, "Ошибка загрузки истории: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
             }
         });
+
     }
 }
 

@@ -1,5 +1,5 @@
 
-package com.github.misham72.KomunalkaApp;
+package com.github.misham72.komunalkaapp;
 
 import javax.swing.*;
 import java.awt.*;
