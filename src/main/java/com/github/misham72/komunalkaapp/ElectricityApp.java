@@ -1,3 +1,4 @@
+
 package com.github.misham72.komunalkaapp;
 
 import com.github.misham72.komunalkacalculator.KomunalkaCalculator;
@@ -8,6 +9,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.prefs.Preferences;
 
 public class ElectricityApp extends JPanel {
 
@@ -15,18 +17,27 @@ public class ElectricityApp extends JPanel {
     private final FileManager fileManager;
     private final String fileName = FileManager.getFilePath("Electricity.txt");
 
+    private final Preferences prefs = Preferences.userNodeForPackage(ElectricityApp.class);
+    private static final String PREF_CURRENT_DATA = "ELECTRICITY_CURRENT_DATA";
+    private static final String PREF_PREVIOUS_DATA = "ELECTRICITY_PREVIOUS_DATA";
+    private static final String PREF_TARIFF = "ELECTRICITY_TARIFF";
+
     public ElectricityApp() {
         this.calculator = new KomunalkaCalculator();
         this.fileManager = new FileManager();
 
-
         setLayout(new GridLayout(7, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Добавляем отступы
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Компоненты интерфейса
         JTextField currentDataField = new JTextField();
         JTextField previousDataField = new JTextField();
         JTextField tariffField = new JTextField();
+
+        // ЗАГРУЖАЕМ сохраненные значения
+        currentDataField.setText(prefs.get(PREF_CURRENT_DATA, ""));
+        previousDataField.setText(prefs.get(PREF_PREVIOUS_DATA, ""));
+        tariffField.setText(prefs.get(PREF_TARIFF, ""));
 
         JLabel consumptionLabel = new JLabel("Расход: -");
         consumptionLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -40,7 +51,7 @@ public class ElectricityApp extends JPanel {
         dateTimeLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
         JButton calculateButton = new JButton("Рассчитать");
-        calculateButton.setBackground(Color.getHSBColor(0.60f,0.40f,0.99f));
+        calculateButton.setBackground(Color.getHSBColor(0.60f, 0.40f, 0.99f));
         calculateButton.setOpaque(true);
         calculateButton.setBorderPainted(false);
         calculateButton.setFont(new Font("Arial", Font.BOLD, 16));
@@ -51,8 +62,7 @@ public class ElectricityApp extends JPanel {
         showHistoryButton.setBorderPainted(false);
         showHistoryButton.setFont(new Font("Arial", Font.BOLD, 16));
 
-
-        // Добавляем компоненты в панель
+        // Добавляем компоненты
         add(new JLabel("Текущие показания:"));
         add(currentDataField);
         add(new JLabel("Предыдущие показания:"));
@@ -62,19 +72,26 @@ public class ElectricityApp extends JPanel {
         add(consumptionLabel);
         add(paymentLabel);
         add(dateTimeLabel);
-        add(new JLabel()); // Пустое поле для выравнивания
+        add(new JLabel());
         add(calculateButton);
         add(showHistoryButton);
 
+        // Навигация по полям с Enter
         currentDataField.addActionListener(_ -> previousDataField.requestFocus());
         previousDataField.addActionListener(_ -> tariffField.requestFocus());
-        tariffField.addActionListener(_ -> calculateButton.doClick()); //  <-- Имитируем клик по кнопке
+        tariffField.addActionListener(_ -> calculateButton.doClick());
 
-        calculateButton.addActionListener(_ -> {
+        /* ОБРАБОТЧИК КНОПКИ "РАССЧИТАТЬ" - сохранение настроек и файла */
+       calculateButton.addActionListener(_ -> {
             try {
                 double currentReading = Double.parseDouble(currentDataField.getText());
                 double previousReading = Double.parseDouble(previousDataField.getText());
                 double tariff = Double.parseDouble(tariffField.getText());
+
+                // СОХРАНЯЕМ НАСТРОЙКИ ПРИ РАСЧЕТЕ
+                prefs.put(PREF_CURRENT_DATA, currentDataField.getText());
+                prefs.put(PREF_PREVIOUS_DATA, previousDataField.getText());
+                prefs.put(PREF_TARIFF, tariffField.getText());
 
                 // Производим расчёты
                 double consumption = calculator.calculateConsumption(currentReading, previousReading);
@@ -87,50 +104,82 @@ public class ElectricityApp extends JPanel {
 
                 String unit = "кВт.";
 
+                // СОХРАНЯЕМ В ФАЙЛ (как в MTSsimApp делает кнопка "Сохранить в файл")
                 fileManager.formatMeterReadingPaymentData(fileName, currentReading, previousReading, consumption, tariff, payment, unit, formattedDateTime);
+
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Введите корректные числа!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-            }catch (IOException ex) {
+            } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Ошибка при записи в файл: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
             }
         });
-
-        // Логика кнопки "Показать историю"
+// Кнопка "Показать историю" - НЕ сохраняет настройки
         showHistoryButton.addActionListener(_ -> {
             try {
                 String history = fileManager.loadFromFile(fileName);
                 if (history.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "История пуста для ресурса: Свет", "Информация", JOptionPane.INFORMATION_MESSAGE);
                 } else {
+                    // Код создания диалогового окна с историей
                     JTextArea textArea = new JTextArea(20, 50);
                     textArea.setText(history);
                     textArea.setEditable(true);
 
                     JScrollPane scrollPane = new JScrollPane(textArea);
-                    // Создаем кнопку сохранения
-                    JButton saveButton = new JButton("Сохранить");
-                    saveButton.setFont(new Font("Arial", Font.BOLD, 14));
-                    saveButton.setBackground(new Color(144, 238, 144)); // Светло-зеленый цвет
 
-                    // Создаем панель для кнопки (чтобы выровнять по правому краю)
+                    // Создаем две кнопки
+                    JButton markPaidButton = new JButton("✅ ОПЛАЧЕНО");
+                    markPaidButton.setFont(new Font("Arial", Font.BOLD, 14));
+                    markPaidButton.setBackground(new Color(200, 255, 200));
+                    markPaidButton.setOpaque(true);
+                    markPaidButton.setBorderPainted(false);
+
+                    JButton saveButton = new JButton("💾 Сохранить");
+                    saveButton.setFont(new Font("Arial", Font.BOLD, 14));
+                    saveButton.setBackground(new Color(144, 238, 144));
+                    saveButton.setOpaque(true);
+                    saveButton.setBorderPainted(false);
+
                     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                    buttonPanel.add(markPaidButton);
                     buttonPanel.add(saveButton);
 
-                    // Создаем основную панель для содержимого
                     JPanel mainPanel = new JPanel(new BorderLayout());
                     mainPanel.add(scrollPane, BorderLayout.CENTER);
                     mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-                    // Создаем диалоговое окно
                     JDialog dialog = new JDialog();
                     dialog.setTitle("История (Свет) - Редактирование");
                     dialog.setModal(true);
                     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     dialog.getContentPane().add(mainPanel);
                     dialog.pack();
+                    dialog.setSize(800, 600);
                     dialog.setLocationRelativeTo(this);
 
-                    // Обработчик кнопки сохранения
+                    // Обработчик кнопки "✅ ОПЛАЧЕНО"
+                    markPaidButton.addActionListener(_ -> {
+                        try {
+                            int caretPos = textArea.getCaretPosition();
+                            int lineNum = textArea.getLineOfOffset(caretPos);
+                            int start = textArea.getLineStartOffset(lineNum);
+                            int end = textArea.getLineEndOffset(lineNum);
+
+                            // (убираем перевод строки)
+                            String lineText = textArea.getText(start, end - start);
+                            lineText = lineText.replace("\n", "").replace("\r", "");
+
+                            // Если строка еще не помечена
+                            if (!lineText.startsWith("[ОПЛАЧЕНО]")) {
+                                // Заменяем строку
+                                textArea.replaceRange("[ОПЛАЧЕНО] " + lineText, start, end);
+                            }
+                        } catch (Exception ex) {
+                            // Игнорируем ошибки курсора
+                        }
+                    });
+
+                    // Обработчик кнопки "💾 Сохранить"
                     saveButton.addActionListener(_ -> {
                         try {
                             fileManager.textWindow(fileName, textArea.getText());
@@ -146,13 +195,13 @@ public class ElectricityApp extends JPanel {
                         }
                     });
 
-                    // Показываем диалоговое окно
                     dialog.setVisible(true);
                 }
-
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Ошибка загрузки истории: " + ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
             }
         });
+
+
     }
 }
